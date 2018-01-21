@@ -1,0 +1,25 @@
+---
+layout: post
+title:  "Swift - zip "
+date:   2018-01-18 10:22:33 +0100
+categories: Swift 
+---
+While writing unit tests where I needed to test values iterating on two arrays simultaneously I realised that in Swift  we can do it without using indexes or C-ish style iterators using the zip function.
+
+{% highlight swift %}
+let decodedData = [ ... ]
+// Some array to be tested, with data generated from a parser by example
+
+let mockData = [ ... ]
+//Some array created by ourselves with well known values
+
+XCTAssert(decodedData.count == mockData.count, "Should have the same # of items")
+
+zip(decodedData, mockData).forEach { (decoded, mock) in
+    XCTAssert(decoded.id == mock.id, "Should be equal" )
+    XCTAssert(decoded.type == mock.type, "Should be equal" )
+    //Etc 
+}
+{% endhighlight %}
+
+Zip creates a sequence of pairs built out of two underlying sequences.
