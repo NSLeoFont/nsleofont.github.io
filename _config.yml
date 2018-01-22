@@ -21,6 +21,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://nsleofont.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: leo1098R
 github_username:  NSLeoFont
+google_analytics: UA-112837338-1
 
 # Build settings
 markdown: kramdown
