@@ -8,9 +8,11 @@ Sometimes when designing/implementing classes, properties and methods in Swift w
 
 We usually write our classes and really don't think so much in inheritance. Maybe the User class will be suclassed, maybe not. Who cares. We just write *class User* and move forward with our code (and our life). 
 
-But the fact is that forgetting about adding access modifiers to our methods and properties, or forgetting to mark our classes as final (unless we need to subclass them), apart from being considered a bad practice from a OOP perspective, has a real performance impact in Swift!
+But the fact is that forgetting about adding access modifiers to our methods and properties, or forgetting to mark our classes as final (unless we need to subclass them), apart from being considered a bad practice from a OOP perspective, may have a real performance impact in Swift!
 
-If we don't pay attention to this detail, we'll be giving the Swift runtime an extra amount of work to determine which method or property has to access on each class (direct all/indirect access) via *Dynamic Dispatch*. 
+If we don't pay attention to this detail, we'll be giving the Swift runtime an extra amount of work to determine which method or property has to access on each class (direct/ indirect access) via *Dynamic Dispatch*. 
+
+Let's see some examples:
 
 
 {% highlight swift %}
