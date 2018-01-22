@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Swift - isEmpty VS count</title>
-  <meta name="description" content="Sometimes when doing code reviews I find code where there’s a check for emptiness using the count property. In Swift, if your collection doesn’t conform to R...">
+  <title>Swift - zip </title>
+  <meta name="description" content="While writing unit tests where I needed to test values iterating on two arrays simultaneously I realised that in Swift we can do it without using indexes or ...">
 
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="http://localhost:4000/swift/2018/01/19/swift-isempty.html">
+  <link rel="canonical" href="http://localhost:4000/blog/2018/01/18/swift-zip">
   <link rel="alternate" type="application/rss+xml" title="Leo&#39;s Corner" href="/feed.xml">
   
   
@@ -58,6 +58,12 @@
             
             
           
+            
+            
+          
+            
+            
+          
         </div>
       </nav>
     
@@ -70,30 +76,33 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Swift - isEmpty VS count</h1>
+    <h1 class="post-title" itemprop="name headline">Swift - zip </h1>
     <p class="post-meta">
-      <time datetime="2018-01-19T10:22:33+01:00" itemprop="datePublished">
+      <time datetime="2018-01-18T10:22:33+01:00" itemprop="datePublished">
         
-        Jan 19, 2018
+        Jan 18, 2018
       </time>
       </p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>Sometimes when doing code reviews I find code where there’s a check for emptiness using the count property. 
-In Swift, if your collection doesn’t conform to RandomAccessCollection, using count will have lineal complexity O(n) while if you use the isEmpty property you’ll have constant complexity O(1).</p>
+    <p>While writing unit tests where I needed to test values iterating on two arrays simultaneously I realised that in Swift  we can do it without using indexes or C-ish style iterators using the zip function.</p>
 
-<p>For big collections on a mobile app this may mean a difference in performance and it would be a capital sin on a server, where data collections are significantly bigger!</p>
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">let</span> <span class="nv">decodedData</span> <span class="o">=</span> <span class="p">[</span> <span class="o">...</span> <span class="p">]</span>
+<span class="c1">// Some array to be tested, with data generated from a parser by example</span>
 
-<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">let</span> <span class="nv">myArray</span> <span class="o">=</span> <span class="p">[</span> <span class="c1">// An array with zillions of data ]</span>
+<span class="k">let</span> <span class="nv">mockData</span> <span class="o">=</span> <span class="p">[</span> <span class="o">...</span> <span class="p">]</span>
+<span class="c1">//Some array created by ourselves with well known values</span>
 
-<span class="k">if</span> <span class="n">myArray</span><span class="o">.</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span> <span class="c1">// etc } </span>
-<span class="c1">// O(n) Complexity will be lineal to the array size!</span>
+<span class="nf">XCTAssert</span><span class="p">(</span><span class="n">decodedData</span><span class="o">.</span><span class="n">count</span> <span class="o">==</span> <span class="n">mockData</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="s">"Should have the same # of items"</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="n">myArray</span><span class="o">.</span><span class="nf">isEmpty</span> <span class="p">{</span> <span class="c1">// etc }    </span>
-<span class="c1">// O(1) Complexity will be constant indepentdently of the array size!</span></code></pre></figure>
+<span class="nf">zip</span><span class="p">(</span><span class="n">decodedData</span><span class="p">,</span> <span class="n">mockData</span><span class="p">)</span><span class="o">.</span><span class="nf">forEach</span> <span class="p">{</span> <span class="p">(</span><span class="n">decoded</span><span class="p">,</span> <span class="n">mock</span><span class="p">)</span> <span class="k">in</span>
+    <span class="nf">XCTAssert</span><span class="p">(</span><span class="n">decoded</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">mock</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s">"Should be equal"</span> <span class="p">)</span>
+    <span class="nf">XCTAssert</span><span class="p">(</span><span class="n">decoded</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">mock</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="s">"Should be equal"</span> <span class="p">)</span>
+    <span class="c1">//Etc </span>
+<span class="p">}</span></code></pre></figure>
 
-<p>If your app does multiple emptiness checks this may have a real impact on performance!</p>
+<p>Zip creates a sequence of pairs built out of two underlying sequences.</p>
 
   </div>
 
