@@ -41,3 +41,4 @@ plugins:
 #   - vendor/gems/
 #   - vendor/ruby/
 permalink: /blog/:year/:month/:day/:title
+safe: true
