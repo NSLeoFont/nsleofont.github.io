@@ -1,4 +1,200 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-22T09:25:44+01:00</updated><id>http://localhost:4000/</id><title type="html">Leo’s Corner</title><subtitle>Welcome to my corner! A place where I'll share my thoughts, ideas, tips and experiences. </subtitle><entry><title type="html">Swift - isEmpty VS count</title><link href="http://localhost:4000/blog/2018/01/19/swift-isempty" rel="alternate" type="text/html" title="Swift - isEmpty VS count" /><published>2018-01-19T10:22:33+01:00</published><updated>2018-01-19T10:22:33+01:00</updated><id>http://localhost:4000/blog/2018/01/19/swift-isempty</id><content type="html" xml:base="http://localhost:4000/blog/2018/01/19/swift-isempty">&lt;p&gt;Sometimes when doing code reviews I find code where there’s a check for emptiness using the count property. 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-01-26T10:32:58+01:00</updated><id>http://localhost:4000/</id><title type="html">Leo’s Corner</title><subtitle>Welcome to my corner! A place where I'll share my thoughts, ideas, tips and experiences. </subtitle><entry><title type="html">Cocoapods - Creating a Swift private pod in Github</title><link href="http://localhost:4000/blog/2018/01/26/cocoapods-quick-how-to-create-private-repo" rel="alternate" type="text/html" title="Cocoapods - Creating a Swift private pod in Github" /><published>2018-01-26T10:22:33+01:00</published><updated>2018-01-26T10:22:33+01:00</updated><id>http://localhost:4000/blog/2018/01/26/cocoapods-quick-how-to-create-private-repo</id><content type="html" xml:base="http://localhost:4000/blog/2018/01/26/cocoapods-quick-how-to-create-private-repo">&lt;p&gt;Sometimes you need a quick way to distribute your &lt;em&gt;reusable&lt;/em&gt; Swift components (because we all write reusable components, don’t we? :P ) in an easy way with our team. We all know how to install 3rd party libraries and dependencies using Cocoapods so there’s no need to explain here all the advantages of using a dependency manager. The question is: Why not do the same with our own code?&lt;/p&gt;
+
+&lt;p&gt;There are wonderful and detailed tutorials out there about how to do it, so this is a practical guide to achieve the final result (being able to distribute our libraries from Github) in a quick way as in “We need it for yesterday”.&lt;/p&gt;
+
+&lt;h1 id=&quot;lets-go&quot;&gt;Let’s go!&lt;/h1&gt;
+
+&lt;p&gt;Let’s assume you have some code you want to share (components, classes etc).&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Make sure your classes (and their related ones) have valid access modifiers in their initializers, properties and methods (e.g. public instead of internal etc). This may be the cause of a lot of errors!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You have to create 2 repos in Github. One will contain your Podspecs (for all your projects) and then you’ll have to create a repo for each project you want to share.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create a new private repo in Github and name it &lt;strong&gt;ios-podspecs&lt;/strong&gt; (or whatever!). Add a README file (which you can later use as a guide of the available Podspecs and link to their repos). Clone it locally.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Add this private repo to your local cocoapods installation with&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;pod repo add ios-podspecs https://yourRepoUrlFromGithub&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Check that everything is fine with:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/.cocoapods/repos/REPO_NAME
+pod repo lint .&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create the repo for your library. Give it a name. E.g. MyLibrary. Clone it on a local folder.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create the Pod project (and an optional Test App and optional Unit Testing!). To do so, type:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;pod lib create MyLibrary&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;This will open a new project in Xcode. The more important  steps here are &lt;strong&gt;editing the podspec file&lt;/strong&gt;(which will contain all the info needed to build it and where you must enter info as the summary, the description, the version, the deployment target, author etc. ) and &lt;strong&gt;adding your classes&lt;/strong&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Editing the podspec&lt;/strong&gt;
+Here is a sample of some of the important sections as a reference (obviously you’ll have to put your own values”:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+s.name             &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'My Library'&lt;/span&gt;
+s.version          &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'0.1.0'&lt;/span&gt;
+s.summary          &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'A lovely library'&lt;/span&gt;
+ 
+ &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+s.description      &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;DESC&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+A simple lovely library made in Swift
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;DESC
+
+&lt;/span&gt;s.homepage         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://github.com/xxx/MyLibrary'&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'&lt;/span&gt;
+s.license          &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; :type &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'MIT'&lt;/span&gt;, :file &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'LICENSE'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+s.author           &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Me!'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'xxx@gmail.com'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+s.source           &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; :git &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://github.com/xxx/MyLibrary.git'&lt;/span&gt;, :tag &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; s.version.to_s &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# s.social_media_url = 'https://twitter.com/Me'&lt;/span&gt;
+
+s.platform     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; :ios, &lt;span class=&quot;s2&quot;&gt;&quot;10.0&quot;&lt;/span&gt;
+s.pod_target_xcconfig &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'SWIFT_VERSION'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'4'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+s.source_files &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Corker/Classes/**/*'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;One of the most bigger &lt;em&gt;pain generators&lt;/em&gt; here is &lt;em&gt;.source_files&lt;/em&gt;. There are zillions of &lt;em&gt;Stack Overflow&lt;/em&gt; Q&amp;amp;A about it so won’t enter into a big detail about it, but basically it specifies where your classes will be in relation to the podspec file in your folder. So it’s critical to put this correctly otherwise it won’t work! (Will give you a quick tip in a moment on a shortcut if you are in a hurry!)&lt;/p&gt;
+
+&lt;p&gt;To check that your podspec file is properly configured you can type the following (you must be in the same folder as the podspec file)&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;pod lib lint MyLibrary.podspec&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If it finds issues it will warn you. If you receive a WARN about not being able to validate the url this is normal since you are using a private repo and you can silence it using the –private modifier.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Copying your classes and files&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can copy all your files inside the &lt;em&gt;Pod&lt;/em&gt; section /Development Pods/MyLibrary. You’ll find a ReplaceMe.swift file there. Many options to be done. Depending on how you copy files here you’ll have to adjust your s.source_files in your podspec file.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Quick Tip&lt;/strong&gt; If you are in a hurry, and don’t want to spend zillions of hours adjusting s.source_files, just right click on the Replace Me file -&amp;gt; Show in finder. This will bring you to the classes folder of the project. Copy your classes there and then drag them to the Xcode project…and you won’t have to modify the s.source_files at all! :)&lt;/p&gt;
+
+&lt;p&gt;If you need to add some demo code or unit tests now is the time. You can add it to the MyLibrary top section and make sure everything builds (CMD+B) and unit tests work (CMD+U). You might have to adjust Target Membership, access modifiers…&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Tip&lt;/strong&gt; if you get a unit testing error where the unit tests breaks before starting “Early unexpected exit, operation never finished bootstrapping” just add $(FRAMEWORK_SEARCH_PATHS) to RunPath Search Paths in the Tests Target!&lt;/p&gt;
+
+&lt;p&gt;Again, to check that your podspec file is properly configured you can type the following (you must be in the same folder as the podspec file)&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;pod lib lint MyLibrary.podspec&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Push your library to its repo and TAG it&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;// Commit and push as usual
+git push &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt;  
+
+// Then push tags with the version -&amp;gt; Must be the same as the podspec file!
+git tag &lt;span class=&quot;s1&quot;&gt;'0.1.0'&lt;/span&gt;
+git push &lt;span class=&quot;nt&quot;&gt;--tags&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Push to spec repo&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You need to confirm that your spec is correct and then push the pod to your private podspec repo&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;pod spec lint MyLibrary.podspec
+
+pod repo push ios-podspecs MyLibrary.podspec&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;And we are done! Ready to share!&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;From this moment if someone else in your team needs to use your wonderful library it’s very simple.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;They need to add the private repo to their local Cocoapods:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;pod repo add ios-podspecs https://UrlOfThePodSpecsRepo&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;They need to specify the source url on their pod file and from there they can use the pod as they’d use any other 3rd party dependency.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;// This would go on top of the pod:
+
+&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://github.com/xxxx/ios-podspecs.git'&lt;/span&gt;
+
+// And this inside each target you want to use your library:
+target &lt;span class=&quot;s1&quot;&gt;'MyProject'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do
+
+  &lt;/span&gt;use_frameworks!
+
+  &lt;span class=&quot;c&quot;&gt;# Pods for MyProject&lt;/span&gt;
+  pod &lt;span class=&quot;s1&quot;&gt;'MyLibrary'&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;'~&amp;gt;0.1.0'&lt;/span&gt;
+
+  // Etc&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;I hope you found this useful. Life is too short to waste it trying to configure things! :)&lt;/p&gt;</content><author><name></name></author><summary type="html">Sometimes you need a quick way to distribute your reusable Swift components (because we all write reusable components, don’t we? :P ) in an easy way with our team. We all know how to install 3rd party libraries and dependencies using Cocoapods so there’s no need to explain here all the advantages of using a dependency manager. The question is: Why not do the same with our own code?</summary></entry><entry><title type="html">Swift - final class</title><link href="http://localhost:4000/blog/2018/01/22/swift-final-classes" rel="alternate" type="text/html" title="Swift - final class" /><published>2018-01-22T10:22:33+01:00</published><updated>2018-01-22T10:22:33+01:00</updated><id>http://localhost:4000/blog/2018/01/22/swift-final%20classes</id><content type="html" xml:base="http://localhost:4000/blog/2018/01/22/swift-final-classes">&lt;p&gt;Sometimes when designing/implementing classes, properties and methods in Swift we forget &lt;em&gt;small details&lt;/em&gt; that can make a difference in terms of performance. Small details matter!&lt;/p&gt;
+
+&lt;p&gt;We usually write our classes and really don’t think so much in inheritance. Maybe the User class will be suclassed, maybe not. Who cares. We just write &lt;em&gt;class User&lt;/em&gt; and move forward with our code (and our life).&lt;/p&gt;
+
+&lt;p&gt;But the fact is that forgetting about adding access modifiers to our methods and properties, or forgetting to mark our classes as final (unless we need to subclass them), apart from being considered a bad practice from a OOP perspective, may have a real performance impact in Swift!&lt;/p&gt;
+
+&lt;p&gt;If we don’t pay attention to this detail, we’ll be giving the Swift runtime an extra amount of work to determine which method or property has to access on each class (direct/ indirect access) via &lt;em&gt;Dynamic Dispatch&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let’s see some examples:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Salesman&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+   
+    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Jesse&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Uses Dynamic Dispatch&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;surname&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Pinkman&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// No Dynamic Dispatch. Marked as final&lt;/span&gt;
+    
+    &lt;span class=&quot;c1&quot;&gt;// Uses Dynamic Dispatch&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sayHello&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    
+    &lt;span class=&quot;c1&quot;&gt;// No Dynamic Dispatch. Private avoids subclassing.&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sayGoodBye&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Bye &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;surname&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// No Dynamic Dispatch. Everything is final as the class is marked as so&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Researcher&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  
+    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Walter&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;surname&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;White&quot;&lt;/span&gt;
+    
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sayHello&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sayGoodBye&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Bye &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;surname&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;The Swift compiler can’t know if a given class marked with default access modifier (internal) will be overriden anywhere else outside its module &lt;strong&gt;unless&lt;/strong&gt; &lt;em&gt;Whole Module Optimization&lt;/em&gt; is enabled in Xcode. So a good check is to make sure that we have this setting on. 
+We should have into consideration that if we have Public methods, properties or classes even though we have &lt;em&gt;Whole Module Optimization&lt;/em&gt; on, the compiler won’t be able to disable Dynamic Dispatch since it won’t know if they’ll be overridden somewhere else.&lt;/p&gt;
+
+&lt;p&gt;So my advise would be that even if we now that the &lt;em&gt;Whole Module Optimization&lt;/em&gt; may be a safety net (unless we are using Public) it’s a good practice to mark classes that won’t be subclassed as final and use access modifiers. We’ll help the runtime and &lt;strong&gt;especially&lt;/strong&gt; our future colleagues who’ll have to read our code six months later and will have a much clearer vision of our intent when implementing things… ;)&lt;/p&gt;</content><author><name></name></author><summary type="html">Sometimes when designing/implementing classes, properties and methods in Swift we forget small details that can make a difference in terms of performance. Small details matter!</summary></entry><entry><title type="html">Swift - isEmpty VS count</title><link href="http://localhost:4000/blog/2018/01/19/swift-isempty" rel="alternate" type="text/html" title="Swift - isEmpty VS count" /><published>2018-01-19T10:22:33+01:00</published><updated>2018-01-19T10:22:33+01:00</updated><id>http://localhost:4000/blog/2018/01/19/swift-isempty</id><content type="html" xml:base="http://localhost:4000/blog/2018/01/19/swift-isempty">&lt;p&gt;Sometimes when doing code reviews I find code where there’s a check for emptiness using the count property. 
 In Swift, if your collection doesn’t conform to RandomAccessCollection, using count will have lineal complexity O(n) while if you use the isEmpty property you’ll have constant complexity O(1).&lt;/p&gt;
 
 &lt;p&gt;For big collections on a mobile app this may mean a difference in performance and it would be a capital sin on a server, where data collections are significantly bigger!&lt;/p&gt;

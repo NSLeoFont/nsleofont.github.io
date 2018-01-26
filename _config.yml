@@ -43,3 +43,4 @@ plugins:
 #   - vendor/ruby/
 permalink: /blog/:year/:month/:day/:title
 safe: true
+future: true

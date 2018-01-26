@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Cocoapods - Creating a Swift private pod in Github</title>
+  <meta name="description" content="Sometimes you need a quick way to distribute your reusable Swift components (because we all write reusable components, don’t we? :P ) in an easy way with our...">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="http://localhost:4000/blog/2018/01/26/cocoapods-quick-how-to-create-private-repo">
+  <link rel="alternate" type="application/rss+xml" title="Leo&#39;s Corner" href="/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/">Leo&#39;s Corner</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/about/">About</a>
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Cocoapods - Creating a Swift private pod in Github</h1>
+    <p class="post-meta">
+      <time datetime="2018-01-26T10:22:33+01:00" itemprop="datePublished">
+        
+        Jan 26, 2018
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>Sometimes you need a quick way to distribute your <em>reusable</em> Swift components (because we all write reusable components, don’t we? :P ) in an easy way with our team. We all know how to install 3rd party libraries and dependencies using Cocoapods so there’s no need to explain here all the advantages of using a dependency manager. The question is: Why not do the same with our own code?</p>
+
+<p>There are wonderful and detailed tutorials out there about how to do it, so this is a practical guide to achieve the final result (being able to distribute our libraries from Github) in a quick way as in “We need it for yesterday”.</p>
+
+<h1 id="lets-go">Let’s go!</h1>
+
+<p>Let’s assume you have some code you want to share (components, classes etc).</p>
+
+<ul>
+  <li>Make sure your classes (and their related ones) have valid access modifiers in their initializers, properties and methods (e.g. public instead of internal etc). This may be the cause of a lot of errors!</li>
+</ul>
+
+<p>You have to create 2 repos in Github. One will contain your Podspecs (for all your projects) and then you’ll have to create a repo for each project you want to share.</p>
+
+<ul>
+  <li>
+    <p>Create a new private repo in Github and name it <strong>ios-podspecs</strong> (or whatever!). Add a README file (which you can later use as a guide of the available Podspecs and link to their repos). Clone it locally.</p>
+  </li>
+  <li>
+    <p>Add this private repo to your local cocoapods installation with</p>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">pod repo add ios-podspecs https://yourRepoUrlFromGithub</code></pre></figure>
+
+<ul>
+  <li>Check that everything is fine with:</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd</span> ~/.cocoapods/repos/REPO_NAME
+pod repo lint .</code></pre></figure>
+
+<ul>
+  <li>
+    <p>Create the repo for your library. Give it a name. E.g. MyLibrary. Clone it on a local folder.</p>
+  </li>
+  <li>
+    <p>Create the Pod project (and an optional Test App and optional Unit Testing!). To do so, type:</p>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">pod lib create MyLibrary</code></pre></figure>
+
+<ul>
+  <li>
+    <p>This will open a new project in Xcode. The more important  steps here are <strong>editing the podspec file</strong>(which will contain all the info needed to build it and where you must enter info as the summary, the description, the version, the deployment target, author etc. ) and <strong>adding your classes</strong>.</p>
+  </li>
+  <li>
+    <p><strong>Editing the podspec</strong>
+Here is a sample of some of the important sections as a reference (obviously you’ll have to put your own values”:</p>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"> <span class="o">(</span>...<span class="o">)</span>
+s.name             <span class="o">=</span> <span class="s1">'My Library'</span>
+s.version          <span class="o">=</span> <span class="s1">'0.1.0'</span>
+s.summary          <span class="o">=</span> <span class="s1">'A lovely library'</span>
+ 
+ <span class="o">(</span>...<span class="o">)</span>
+s.description      <span class="o">=</span> <span class="o">&lt;&lt;-</span><span class="no">DESC</span><span class="sh">
+A simple lovely library made in Swift
+</span><span class="no">DESC
+
+</span>s.homepage         <span class="o">=</span> <span class="s1">'https://github.com/xxx/MyLibrary'</span>
+<span class="c"># s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'</span>
+s.license          <span class="o">=</span> <span class="o">{</span> :type <span class="o">=&gt;</span> <span class="s1">'MIT'</span>, :file <span class="o">=&gt;</span> <span class="s1">'LICENSE'</span> <span class="o">}</span>
+s.author           <span class="o">=</span> <span class="o">{</span> <span class="s1">'Me!'</span> <span class="o">=&gt;</span> <span class="s1">'xxx@gmail.com'</span> <span class="o">}</span>
+s.source           <span class="o">=</span> <span class="o">{</span> :git <span class="o">=&gt;</span> <span class="s1">'https://github.com/xxx/MyLibrary.git'</span>, :tag <span class="o">=&gt;</span> s.version.to_s <span class="o">}</span>
+<span class="c"># s.social_media_url = 'https://twitter.com/Me'</span>
+
+s.platform     <span class="o">=</span> :ios, <span class="s2">"10.0"</span>
+s.pod_target_xcconfig <span class="o">=</span> <span class="o">{</span> <span class="s1">'SWIFT_VERSION'</span> <span class="o">=&gt;</span> <span class="s1">'4'</span> <span class="o">}</span>
+
+s.source_files <span class="o">=</span> <span class="s1">'Corker/Classes/**/*'</span> <span class="k">***</span>
+<span class="o">(</span>...<span class="o">)</span></code></pre></figure>
+
+<p>One of the most bigger <em>pain generators</em> here is <em>.source_files</em>. There are zillions of <em>Stack Overflow</em> Q&amp;A about it so won’t enter into a big detail about it, but basically it specifies where your classes will be in relation to the podspec file in your folder. So it’s critical to put this correctly otherwise it won’t work! (Will give you a quick tip in a moment on a shortcut if you are in a hurry!)</p>
+
+<p>To check that your podspec file is properly configured you can type the following (you must be in the same folder as the podspec file)</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">pod lib lint MyLibrary.podspec</code></pre></figure>
+
+<p>If it finds issues it will warn you. If you receive a WARN about not being able to validate the url this is normal since you are using a private repo and you can silence it using the –private modifier.</p>
+
+<ul>
+  <li><strong>Copying your classes and files</strong></li>
+</ul>
+
+<p>You can copy all your files inside the <em>Pod</em> section /Development Pods/MyLibrary. You’ll find a ReplaceMe.swift file there. Many options to be done. Depending on how you copy files here you’ll have to adjust your s.source_files in your podspec file.</p>
+
+<p><strong>Quick Tip</strong> If you are in a hurry, and don’t want to spend zillions of hours adjusting s.source_files, just right click on the Replace Me file -&gt; Show in finder. This will bring you to the classes folder of the project. Copy your classes there and then drag them to the Xcode project…and you won’t have to modify the s.source_files at all! :)</p>
+
+<p>If you need to add some demo code or unit tests now is the time. You can add it to the MyLibrary top section and make sure everything builds (CMD+B) and unit tests work (CMD+U). You might have to adjust Target Membership, access modifiers…</p>
+
+<p><strong>Tip</strong> if you get a unit testing error where the unit tests breaks before starting “Early unexpected exit, operation never finished bootstrapping” just add $(FRAMEWORK_SEARCH_PATHS) to RunPath Search Paths in the Tests Target!</p>
+
+<p>Again, to check that your podspec file is properly configured you can type the following (you must be in the same folder as the podspec file)</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">pod lib lint MyLibrary.podspec</code></pre></figure>
+
+<ul>
+  <li>Push your library to its repo and TAG it</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">// Commit and push as usual
+git push <span class="nt">-u</span>  
+
+// Then push tags with the version -&gt; Must be the same as the podspec file!
+git tag <span class="s1">'0.1.0'</span>
+git push <span class="nt">--tags</span></code></pre></figure>
+
+<ul>
+  <li>Push to spec repo</li>
+</ul>
+
+<p>You need to confirm that your spec is correct and then push the pod to your private podspec repo</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">pod spec lint MyLibrary.podspec
+
+pod repo push ios-podspecs MyLibrary.podspec</code></pre></figure>
+
+<ul>
+  <li><strong>And we are done! Ready to share!</strong></li>
+</ul>
+
+<p>From this moment if someone else in your team needs to use your wonderful library it’s very simple.</p>
+
+<ol>
+  <li>They need to add the private repo to their local Cocoapods:</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">pod repo add ios-podspecs https://UrlOfThePodSpecsRepo</code></pre></figure>
+
+<ol>
+  <li>They need to specify the source url on their pod file and from there they can use the pod as they’d use any other 3rd party dependency.</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">// This would go on top of the pod:
+
+<span class="nb">source</span> <span class="s1">'https://github.com/xxxx/ios-podspecs.git'</span>
+
+// And this inside each target you want to use your library:
+target <span class="s1">'MyProject'</span> <span class="k">do
+
+  </span>use_frameworks!
+
+  <span class="c"># Pods for MyProject</span>
+  pod <span class="s1">'MyLibrary'</span>, <span class="s1">'~&gt;0.1.0'</span>
+
+  // Etc</code></pre></figure>
+
+<p>I hope you found this useful. Life is too short to waste it trying to configure things! :)</p>
+
+
+  </div>
+
+  
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Leo&#39;s Corner</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Leo&#39;s Corner
+            
+            </li>
+            
+            <li><a href="mailto:leo.fontg@gmail.com">leo.fontg@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/NSLeoFont"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">NSLeoFont</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/leo1098R"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">leo1098R</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Welcome to my corner! A place where I&#39;ll share my thoughts, ideas, tips and experiences. </p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
