@@ -74,7 +74,7 @@ You can copy all your files inside the *Pod* section /Development Pods/MyLibrary
 
 If you need to add some demo code or unit tests now is the time. You can add it to the MyLibrary top section and make sure everything builds (CMD+B) and unit tests work (CMD+U). You might have to adjust Target Membership, access modifiers...
 
-**Tip** if you get a unit testing error where the unit tests breaks before starting "Early unexpected exit, operation never finished bootstrapping" just add $(FRAMEWORK_SEARCH_PATHS) to RunPath Search Paths in the Tests Target!
+**Tip** if you are using XCTest and get a unit testing error where the unit tests breaks before starting "Early unexpected exit, operation never finished bootstrapping" just add $(FRAMEWORK_SEARCH_PATHS) to RunPath Search Paths in the Tests Target!
 
 Again, to check that your podspec file is properly configured you can type the following (you must be in the same folder as the podspec file)
 {% highlight bash %}pod lib lint MyLibrary.podspec{% endhighlight %}
