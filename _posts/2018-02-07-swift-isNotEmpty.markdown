@@ -4,7 +4,7 @@ title:  "Swift - isNotEmpty "
 date:   2018-02-07 10:22:33 +0100
 categories: Swift 
 ---
-As I already discussed on a previous post (see https://nsleofont.github.io/blog/2018/01/19/swift-isempty) if we need to check if one of our collections is empty, Swift provides a very easy and convenient way to do it using the *isEmpty* property.
+As I already discussed on a previous post (see [https://nsleofont.github.io/blog/2018/01/19/swift-isempty](https://nsleofont.github.io/blog/2018/01/19/swift-isempty) ) if we need to check if one of our collections is empty, Swift provides a very easy and convenient way to do it using the *isEmpty* property.
 
 However there's no nice way to check if a collection is *NOT empty* and we end up writing ugly code like:
 
