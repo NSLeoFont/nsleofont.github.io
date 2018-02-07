@@ -10,10 +10,10 @@ However there's no nice way to check if a collection is *NOT empty* and we end u
 
 {% highlight swift %}
 
-// Makes sense but it's ugly as having the exclamation mark on first position
+// Having the negation exclamation mark on first position
 // is counterintuitive.
 
-if !collection.isEmpty  (...) // We want to check if it's not empty...but can be confusing!
+if !collection.isEmpty  (...)  
 
 // Gets worst if you have to force unwrap an optional...
 
@@ -21,7 +21,8 @@ if !collection!.isEmpty (...) // Ouch!
 
 {% endhighlight %}
 
-How handy it would be to be able to do something like: *collection.isNotEmpty* wouldn't it?
+
+How handy it would be to be able to do something like: ***collection.isNotEmpty*** wouldn't it?
 
 This small extension will do exactly that, wrapping the ugliness behind the scenes and allowing your code to be shiny and easier to read.
 
@@ -37,6 +38,7 @@ extension Array {
 
 {% endhighlight %}
 
+
 From now you'll be able to write *beautiful* code :P:
 
 {% highlight swift %}
@@ -46,4 +48,5 @@ if collection.isNotEmpty  (...) // Much better!!!
 {% endhighlight %}
 
 
+Happy coding!!! :)
 
