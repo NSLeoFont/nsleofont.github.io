@@ -19,4 +19,4 @@ Disclaimer: You should never leak private information as you may face serious le
 
 If you want to read a very interesting article regarding this subject (with examples, source code and even a live demo) please check:
 
-https://medium.com/@umpox/be-careful-what-you-copy-invisibly-inserting-usernames-into-text-with-zero-width-characters-18b4e6f17b66
+[https://medium.com/@umpox/be-careful-what-you-copy-invisibly-inserting-usernames-into-text-with-zero-width-characters-18b4e6f17b66]
